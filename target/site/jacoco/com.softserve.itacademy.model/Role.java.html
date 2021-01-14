@@ -14,17 +14,6 @@ import java.util.List;
 @Entity
 @Table(name = &quot;roles&quot;)
 public class Role {
-    public void setId(long id) {
-<span class="nc" id="L18">        this.id = id;</span>
-<span class="nc" id="L19">    }</span>
-
-    public List&lt;User&gt; getUsers() {
-<span class="nc" id="L22">        return users;</span>
-    }
-
-    public void setUsers(List&lt;User&gt; users) {
-<span class="nc" id="L26">        this.users = users;</span>
-<span class="nc" id="L27">    }</span>
 
     @Id
     @GeneratedValue(generator = &quot;sequence-generator&quot;)
@@ -32,49 +21,51 @@ public class Role {
             name = &quot;sequence-generator&quot;,
             strategy = &quot;org.hibernate.id.enhanced.SequenceStyleGenerator&quot;,
             parameters = {
-                    @Parameter(name = &quot;sequence_name&quot;, value = &quot;roles_sequence&quot;),
-                    @Parameter(name = &quot;initial_value&quot;, value = &quot;3&quot;),
+                    @Parameter(name = &quot;sequence_name&quot;, value = &quot;role_sequence&quot;),
+                    @Parameter(name = &quot;initial_value&quot;, value = &quot;10&quot;),
                     @Parameter(name = &quot;increment_size&quot;, value = &quot;1&quot;)
             }
     )
     private long id;
 
-    @NotNull(message = &quot;The roleName cannot be null&quot;)
     @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Size(min = 2,max = 254,message = &quot;The length of roleName should be &gt;2 &amp;&amp; &lt;255&quot;)
-    @Pattern(regexp = &quot;^[A-Za-z]+((\\s)?([A-Za-z])+)*$&quot;, message = &quot;wrong name format&quot;)
-    @Column(nullable = false, unique = true)
+    @Size(min = 2, max = 254)
+    @Column(nullable = false, unique = true)  
     private String name;
 
-<span class="nc" id="L49">    @OneToMany(mappedBy = &quot;roles&quot;)</span>
-    private List&lt;User&gt; users=new ArrayList&lt;&gt;();
+	
+	@OneToMany(mappedBy = &quot;role&quot;)
+	private List&lt;User&gt; users;
+	 
 
-<span class="nc" id="L52">    public Role() {</span>
-<span class="nc" id="L53">    }</span>
+<span class="fc" id="L41">    public Role() {</span>
+<span class="fc" id="L42">    }</span>
 
     public long getId() {
-<span class="nc" id="L56">        return id;</span>
+<span class="nc" id="L45">        return id;</span>
     }
 
     public String getName() {
-<span class="nc" id="L60">        return name;</span>
+<span class="nc" id="L49">        return name;</span>
     }
 
     public void setName(String name) {
-<span class="nc" id="L64">        this.name = name;</span>
-<span class="nc" id="L65">    }</span>
-/*
-    public List&lt;User&gt; getUsers() {
-        return users;
-    }
+<span class="fc" id="L53">        this.name = name;</span>
+<span class="fc" id="L54">    }</span>
 
-    public void setUsers(List&lt;User&gt; users) {
-        this.users = users;
-    }*/
+	
+<span class="nc" id="L57">	public List&lt;User&gt; getUsers() { return users; }</span>
+	 
+<span class="nc" id="L59">	public void setUsers(List&lt;User&gt; users) { this.users = users; }</span>
+	
 
-    @Override
+    public void setId(long id) {
+<span class="nc" id="L63">		this.id = id;</span>
+<span class="nc" id="L64">	}</span>
+
+	@Override
     public String toString() {
-<span class="nc" id="L77">        return &quot;Role {&quot; +</span>
+<span class="nc" id="L68">        return &quot;Role {&quot; +</span>
                 &quot;id = &quot; + id +
                 &quot;, name = '&quot; + name + '\'' +
                 &quot;} &quot;;

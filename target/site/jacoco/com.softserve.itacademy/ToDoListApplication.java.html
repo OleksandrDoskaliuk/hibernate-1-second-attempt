@@ -12,7 +12,7 @@ import lombok.val;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
+import org.springframework.data.jpa.repository.support.JpaRepositoryFactory;
 
 import javax.validation.*;
 import java.time.LocalDate;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 @SpringBootApplication
-<span class="nc" id="L23">@AllArgsConstructor</span>
+<span class="fc" id="L23">@AllArgsConstructor</span>
 public class ToDoListApplication implements CommandLineRunner {
 
     UserRepository userRepository;
@@ -33,31 +33,33 @@ public class ToDoListApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-<span class="nc" id="L36">        System.out.println(&quot;Running Spring Boot Application&quot;);</span>
-
-
-<span class="nc" id="L39">        Role role = roleRepository.getOne(2L);</span>
-<span class="nc" id="L40">        User validUser  = new User();</span>
-<span class="nc" id="L41">        validUser.setEmail(&quot;valid@cv.edu.uaa&quot;);</span>
-<span class="nc" id="L42">        validUser.setFirstName(&quot;Valid-Name&quot;);</span>
-<span class="nc" id="L43">        validUser.setLastName(&quot;Valid-Name&quot;);</span>
-<span class="nc" id="L44">        validUser.setPassword(&quot;qwQW12!@&quot;);</span>
-<span class="nc" id="L45">        validUser.setRole(role);</span>
-
-<span class="nc" id="L47">        validUser = userRepository.save(validUser);</span>
-
-<span class="nc" id="L49">        ToDo toDo = new ToDo();</span>
-<span class="nc" id="L50">        toDo.setTitle(&quot;Other&quot;);</span>
-<span class="nc" id="L51">        toDo.setOwner(validUser);</span>
-<span class="nc" id="L52">        toDo = toDoRepository.save(toDo);</span>
-
-<span class="nc" id="L54">        LocalDate localDate = toDo.getCreated_at().toLocalDate();</span>
-<span class="nc" id="L55">        LocalDate today = LocalDate.now();</span>
-<span class="nc" id="L56">        System.out.println(localDate.equals(today));</span>
+<span class="fc" id="L36">        System.out.println(&quot;Running Spring Boot Application&quot;);</span>
 
 
 
-<span class="nc" id="L60">    }</span>
+<span class="fc" id="L40">        Role role = roleRepository.getOne(2L);</span>
+<span class="fc" id="L41">        User validUser  = new User();</span>
+<span class="fc" id="L42">        validUser.setEmail(&quot;valid@cv.edu.ua&quot;);</span>
+<span class="fc" id="L43">        validUser.setFirstName(&quot;Valid-Name&quot;);</span>
+<span class="fc" id="L44">        validUser.setLastName(&quot;Valid-Name&quot;);</span>
+<span class="fc" id="L45">        validUser.setPassword(&quot;qwQW12!@&quot;);</span>
+<span class="fc" id="L46">        validUser.setRole(role);</span>
+
+<span class="fc" id="L48">        validUser = userRepository.save(validUser);</span>
+<span class="fc" id="L49">        System.out.println(&quot;Done&quot;);</span>
+		
+<span class="fc" id="L51">		ToDo toDo = new ToDo(); </span>
+<span class="fc" id="L52">		toDo.setTitle(&quot;Other&quot;); </span>
+<span class="fc" id="L53">		toDo.setOwner(validUser);</span>
+<span class="fc" id="L54">		toDo = toDoRepository.save(toDo);</span>
+		  
+<span class="fc" id="L56">		LocalDate localDate = toDo.getCreatedAt().toLocalDate(); </span>
+<span class="fc" id="L57">		LocalDate today = LocalDate.now(); </span>
+<span class="fc" id="L58">		System.out.println(localDate.equals(today));</span>
+		 
+
+
+
+<span class="fc" id="L63">    }</span>
 }
-
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

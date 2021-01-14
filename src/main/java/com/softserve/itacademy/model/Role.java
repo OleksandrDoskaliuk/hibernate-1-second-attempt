@@ -29,7 +29,8 @@ public class Role {
     private long id;
 
     @NotBlank(message = "The roleName cannot be empty")
-    @Column(nullable = false, unique = true)
+    @Size(min = 2, max = 254)
+    @Column(nullable = false, unique = true)  
     private String name;
 
 	

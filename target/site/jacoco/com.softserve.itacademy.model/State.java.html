@@ -3,48 +3,52 @@
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 @Entity
 @Table(name = &quot;states&quot;)
-public class State {
-<span class="nc" id="L13">    public State() {</span>
-<span class="nc" id="L14">    }</span>
+<span class="fc" id="L18">public class State {</span>
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@NotBlank
+	@Column(name = &quot;name&quot;, nullable = false,unique = true)
+	@Size(min =1,max =20)
+	@Pattern(regexp = &quot;([^\&quot;!\&quot;#$%&amp;'()*+,./:;&lt;=&gt;?@[\\]^`{|}~\&quot;])+&quot;)
+	private String name;
+	
+	@OneToMany(mappedBy = &quot;state&quot;,
+			cascade = CascadeType.ALL)
+	private List&lt;Task&gt; tasks;
 
-    @Id
-    @GeneratedValue(generator = &quot;sequence-generator&quot;)
-    @GenericGenerator(
-            name = &quot;sequence-generator&quot;,
-            strategy = &quot;org.hibernate.id.enhanced.SequenceStyleGenerator&quot;,
-            parameters = {
-                    @Parameter(name = &quot;sequence_name&quot;, value = &quot;state_sequence&quot;),
-                    @Parameter(name = &quot;initial_value&quot;, value = &quot;10&quot;),
-                    @Parameter(name = &quot;increment_size&quot;, value = &quot;1&quot;)
-            }
-    )
-    private long id;
+	public String getName() {
+<span class="nc" id="L34">		return name;</span>
+	}
 
+	public void setName(String name) {
+<span class="nc" id="L38">		this.name = name;</span>
+<span class="nc" id="L39">	}</span>
 
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false, unique = true)
-    private String name;
+	public List&lt;Task&gt; getTasks() {
+<span class="nc" id="L42">		return tasks;</span>
+	}
 
-    public long getId() {
-<span class="nc" id="L35">        return id;</span>
-    }
+	public void setTasks(List&lt;Task&gt; tasks) {
+<span class="nc" id="L46">		this.tasks = tasks;</span>
+<span class="nc" id="L47">	}</span>
 
-    public void setId(long id) {
-<span class="nc" id="L39">        this.id = id;</span>
-<span class="nc" id="L40">    }</span>
-
-    public String getName() {
-<span class="nc" id="L43">        return name;</span>
-    }
-
-    public void setName(String name) {
-<span class="nc" id="L47">        this.name = name;</span>
-<span class="nc" id="L48">    }</span>
+	public long getId() {
+<span class="nc" id="L50">		return id;</span>
+	}
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

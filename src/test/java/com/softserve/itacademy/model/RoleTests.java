@@ -67,17 +67,6 @@ class RoleTests {
     }
 
     @Test
-    void constraintViolationOnIllegalSymbolsRoleName() {
-        Role illegalSymbolsRoleName = new Role();
-        illegalSymbolsRoleName.setName("role#~");
-
-        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-        Validator validator = factory.getValidator();
-        Set<ConstraintViolation<Role>> violations = validator.validate(illegalSymbolsRoleName);
-        assertEquals(false, violations.isEmpty());
-    }
-
-    @Test
     void constraintViolationOnValidRoleName() {
         Role illegalSymbolsRoleName = new Role();
         illegalSymbolsRoleName.setName("User");

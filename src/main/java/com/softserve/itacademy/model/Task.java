@@ -17,59 +17,61 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "tasks")
 public class Task {
-	public void setId(long id) {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@NotBlank
+	@Size(min = 3, max = 200)
+	@Column(name = "name")
+	private String name;
+	
+	@Column(name = "priority")
+	private String priority;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "state_id")
+	private State state;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "todo_id")
+	private ToDo todo;
 
-    
+	public String getName() {
+		return name;
+	}
 
-    @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "roles_sequence"),
-                    @Parameter(name = "initial_value", value = "3"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
-    private long id;
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @NotNull(message = "The roleName cannot be null")
-    @NotBlank(message = "The roleName cannot be empty")
-    @Size(min = 2,max = 254,message = "The length of roleName should be >2 && <255")
-    @Pattern(regexp = "^[A-Za-z]+((\\s)?([A-Za-z])+)*$", message = "wrong name format")
-    @Column(nullable = false, unique = true)
-    private String name;
+	public String getPriority() {
+		return priority;
+	}
 
-   
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public State getState() {
+		return state;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setState(State state) {
+		this.state = state;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-/*
-    public List<User> getUsers() {
-        return users;
-    }
+	public ToDo getTodo() {
+		return todo;
+	}
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }*/
+	public void setTodo(ToDo todo) {
+		this.todo = todo;
+	}
 
-    @Override
-    public String toString() {
-        return "Role {" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                "} ";
-    }
+	public long getId() {
+		return id;
+	}
+	
+	
 }

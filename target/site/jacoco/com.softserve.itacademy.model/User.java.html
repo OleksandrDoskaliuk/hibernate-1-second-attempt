@@ -8,148 +8,111 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import java.util.ArrayList;
 import java.util.List;
 
 
 @Entity
 @Table(name = &quot;users&quot;)
-<span class="nc" id="L17">public class User {</span>
-    public Role getRoles() {
-<span class="nc" id="L19">        return roles;</span>
-    }
+<span class="fc" id="L19">public class User {</span>
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@NotBlank
+	@Column(name = &quot;email&quot;)
+	@Email
+	private String email;
+	
+	@NotBlank
+	@Column(name = &quot;first_name&quot;)
+	@Pattern(regexp = &quot;^([A-Z][a-z]+([ ]?[a-z]?['-]?[A-Z][a-z]+)*)$&quot;)
+	private String firstName;
+	
+	@Column(name = &quot;last_name&quot;)
+	private String lastName;
+	
+	@NotBlank
+	@Column(name = &quot;password&quot;)
+	private String password;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = &quot;role_id&quot;)
+	private Role role;
+	
+	@OneToMany(mappedBy = &quot;owner&quot;,
+			cascade = CascadeType.ALL)
+	private List&lt;ToDo&gt; todos;
+	
+	@ManyToMany
+	@JoinTable(name = &quot;todo_collaborator&quot;,
+	joinColumns = @JoinColumn(name = &quot;collaborator_id&quot;),
+	inverseJoinColumns = @JoinColumn(name = &quot;todo_id&quot;))
+	private List&lt;ToDo&gt; myTodos;
+	
+	
+	public List&lt;ToDo&gt; getMyTodos() {
+<span class="nc" id="L57">		return myTodos;</span>
+	}
 
-    public void setRoles(Role roles) {
-<span class="nc" id="L23">        this.roles = roles;</span>
-<span class="nc" id="L24">    }</span>
+	public void setMyTodos(List&lt;ToDo&gt; myTodos) {
+<span class="nc" id="L61">		this.myTodos = myTodos;</span>
+<span class="nc" id="L62">	}</span>
 
-    public List&lt;ToDo&gt; getTodos() {
-<span class="nc" id="L27">        return todos;</span>
-    }
+	public List&lt;ToDo&gt; getTodos() {
+<span class="nc" id="L65">		return todos;</span>
+	}
 
-    public void setTodos(List&lt;ToDo&gt; todos) {
-<span class="nc" id="L31">        this.todos = todos;</span>
-<span class="nc" id="L32">    }</span>
+	public void setTodos(List&lt;ToDo&gt; todos) {
+<span class="nc" id="L69">		this.todos = todos;</span>
+<span class="nc" id="L70">	}</span>
 
-    public void setFirst_name(String first_name) {
-<span class="nc" id="L35">        this.first_name = first_name;</span>
-<span class="nc" id="L36">    }</span>
+	public String getEmail() {
+<span class="fc" id="L73">		return email;</span>
+	}
 
-    public String getLast_name() {
-<span class="nc" id="L39">        return last_name;</span>
-    }
+	public void setEmail(String email) {
+<span class="fc" id="L77">		this.email = email;</span>
+<span class="fc" id="L78">	}</span>
 
-    public void setLast_name(String last_name) {
-<span class="nc" id="L43">        this.last_name = last_name;</span>
-<span class="nc" id="L44">    }</span>
+	public String getFirstName() {
+<span class="nc" id="L81">		return firstName;</span>
+	}
 
-    public long getId() {
-<span class="nc" id="L47">        return id;</span>
-    }
+	public void setFirstName(String firstName) {
+<span class="fc" id="L85">		this.firstName = firstName;</span>
+<span class="fc" id="L86">	}</span>
 
-    public void setId(long id) {
-<span class="nc" id="L51">        this.id = id;</span>
-<span class="nc" id="L52">    }</span>
+	public String getLastName() {
+<span class="nc" id="L89">		return lastName;</span>
+	}
 
-    public String getEmail() {
-<span class="nc" id="L55">        return email;</span>
-    }
+	public void setLastName(String lastName) {
+<span class="fc" id="L93">		this.lastName = lastName;</span>
+<span class="fc" id="L94">	}</span>
 
-    public void setEmail(String email) {
-<span class="nc" id="L59">        this.email = email;</span>
-<span class="nc" id="L60">    }</span>
+	public String getPassword() {
+<span class="nc" id="L97">		return password;</span>
+	}
 
-    public String getFirst_name() {
-<span class="nc" id="L63">        return first_name;</span>
-    }
+	public void setPassword(String password) {
+<span class="fc" id="L101">		this.password = password;</span>
+<span class="fc" id="L102">	}</span>
 
-    public void setFirstName(String first_name) {
-<span class="nc" id="L67">        this.first_name = first_name;</span>
-<span class="nc" id="L68">    }</span>
+	public Role getRole() {
+<span class="nc" id="L105">		return role;</span>
+	}
 
-    public String getLastName() {
-<span class="nc" id="L71">        return last_name;</span>
-    }
+	public void setRole(Role role) {
+<span class="fc" id="L109">		this.role = role;</span>
+<span class="fc" id="L110">	}</span>
 
-    public void setLastName(String last_name) {
-<span class="nc" id="L75">        this.last_name = last_name;</span>
-<span class="nc" id="L76">    }</span>
-
-    public String getPassword() {
-<span class="nc" id="L79">        return password;</span>
-    }
-
-    public void setPassword(String password) {
-<span class="nc" id="L83">        this.password = password;</span>
-<span class="nc" id="L84">    }</span>
-
- /*   public List&lt;Role&gt; getRoles() {
-        return roles;
-    }
-
-    public void setRole(Role role) {
-        this.roles .add(role);
-    }*/
-
-
-    @ManyToOne
-    @JoinColumn(name = &quot;role_id&quot;)
-    private Role roles;
-
-<span class="nc" id="L99">    @OneToMany(mappedBy = &quot;owner&quot;)</span>
-    private List&lt;ToDo&gt; todos=new ArrayList&lt;&gt;();
-
-
-    @Id
-    @GeneratedValue(generator = &quot;sequence-generator&quot;)
-    @GenericGenerator(
-            name = &quot;sequence-generator&quot;,
-            strategy = &quot;org.hibernate.id.enhanced.SequenceStyleGenerator&quot;,
-            parameters = {
-                    @Parameter(name = &quot;sequence_name&quot;, value = &quot;user_sequence&quot;),
-                    @Parameter(name = &quot;initial_value&quot;, value = &quot;10&quot;),
-                    @Parameter(name = &quot;increment_size&quot;, value = &quot;1&quot;)
-            }
-    )
-    private long id;
-    @Email
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false, unique = true)
-    private String email;
-    /*
-        @Pattern(
-                regexp = &quot;^[\\w!#$%&amp;'*+/=?{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$&quot;,
-                message = &quot;invalid nameghdftgjhdrytujdcr6yi&quot;
-        )*/
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false)
-    private String first_name;
-
-
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false)
-    private String last_name;
-
-
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false)
-    private String password;
-
-    /*  @OneToMany(mappedBy = &quot;roles&quot;)
-      List&lt;Role&gt; roles;
-  */
-   /* @Column(name = &quot;role_id&quot;)
-    private long role_id;
-
-    public long getRole() {
-        return role_id;
-    }
-*/
-
-    public void setRole(Role role) {
-<span class="nc" id="L150">        roles = role;</span>
-<span class="nc" id="L151">    }</span>
-
-
+	public long getId() {
+<span class="fc" id="L113">		return id;</span>
+	}
+	
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

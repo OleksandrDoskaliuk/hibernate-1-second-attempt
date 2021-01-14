@@ -3,89 +3,76 @@
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 
 @Entity
 @Table(name = &quot;tasks&quot;)
-<span class="nc" id="L13">public class Task {</span>
-    public long getId() {
-<span class="nc" id="L15">        return id;</span>
-    }
+<span class="fc" id="L19">public class Task {</span>
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@NotBlank
+	@Size(min = 3, max = 200)
+	@Column(name = &quot;name&quot;)
+	private String name;
+	
+	@Column(name = &quot;priority&quot;)
+	private String priority;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = &quot;state_id&quot;)
+	private State state;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = &quot;todo_id&quot;)
+	private ToDo todo;
 
-    public void setId(long id) {
-<span class="nc" id="L19">        this.id = id;</span>
-<span class="nc" id="L20">    }</span>
+	public String getName() {
+<span class="nc" id="L41">		return name;</span>
+	}
 
-    public String getName() {
-<span class="nc" id="L23">        return name;</span>
-    }
+	public void setName(String name) {
+<span class="nc" id="L45">		this.name = name;</span>
+<span class="nc" id="L46">	}</span>
 
-    public void setName(String name) {
-<span class="nc" id="L27">        this.name = name;</span>
-<span class="nc" id="L28">    }</span>
+	public String getPriority() {
+<span class="nc" id="L49">		return priority;</span>
+	}
 
-    public String getPriority() {
-<span class="nc" id="L31">        return priority;</span>
-    }
+	public void setPriority(String priority) {
+<span class="nc" id="L53">		this.priority = priority;</span>
+<span class="nc" id="L54">	}</span>
 
-    public void setPriority(String priority) {
-<span class="nc" id="L35">        this.priority = priority;</span>
-<span class="nc" id="L36">    }</span>
+	public State getState() {
+<span class="nc" id="L57">		return state;</span>
+	}
 
-    public long getState_id() {
-<span class="nc" id="L39">        return state_id;</span>
-    }
+	public void setState(State state) {
+<span class="nc" id="L61">		this.state = state;</span>
+<span class="nc" id="L62">	}</span>
 
-    public void setState_id(long state_id) {
-<span class="nc" id="L43">        this.state_id = state_id;</span>
-<span class="nc" id="L44">    }</span>
+	public ToDo getTodo() {
+<span class="nc" id="L65">		return todo;</span>
+	}
 
-    public long getTodo_id() {
-<span class="nc" id="L47">        return todo_id;</span>
-    }
+	public void setTodo(ToDo todo) {
+<span class="nc" id="L69">		this.todo = todo;</span>
+<span class="nc" id="L70">	}</span>
 
-    public void setTodo_id(long todo_id) {
-<span class="nc" id="L51">        this.todo_id = todo_id;</span>
-<span class="nc" id="L52">    }</span>
-
-    @Id
-    @GeneratedValue(generator = &quot;sequence-generator&quot;)
-    @GenericGenerator(
-            name = &quot;sequence-generator&quot;,
-            strategy = &quot;org.hibernate.id.enhanced.SequenceStyleGenerator&quot;,
-            parameters = {
-                    @Parameter(name = &quot;sequence_name&quot;, value = &quot;task_sequence&quot;),
-                    @Parameter(name = &quot;initial_value&quot;, value = &quot;10&quot;),
-                    @Parameter(name = &quot;increment_size&quot;, value = &quot;1&quot;)
-            }
-    )
-    private long id;
-
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false)
-    private String name;
-
-    @Column(name = &quot;priority&quot;)
-    private String priority;
-
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false, unique = true)
-
-    @JoinColumn
-    private long state_id;
-
-
-    @JoinColumn
-    private  long todo_id;
-
-
-
-
-
-
-
+	public long getId() {
+<span class="nc" id="L73">		return id;</span>
+	}
+	
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -16,58 +16,38 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "states")
 public class State {
-	public void setId(long id) {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	@NotBlank
+	@Column(name = "name", nullable = false,unique = true)
+	@Size(min =1,max =20)
+	@Pattern(regexp = "([^\"!\"#$%&'()*+,./:;<=>?@[\\]^`{|}~\"])+")
+	private String name;
+	
+	@OneToMany(mappedBy = "state",
+			cascade = CascadeType.ALL)
+	private List<Task> tasks;
 
-    
+	public String getName() {
+		return name;
+	}
 
-    @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "roles_sequence"),
-                    @Parameter(name = "initial_value", value = "3"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
-    private long id;
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @NotNull(message = "The roleName cannot be null")
-    @NotBlank(message = "The roleName cannot be empty")
-    @Size(min = 2,max = 254,message = "The length of roleName should be >2 && <255")
-    @Pattern(regexp = "^[A-Za-z]+((\\s)?([A-Za-z])+)*$", message = "wrong name format")
-    @Column(nullable = false, unique = true)
-    private String name;
-  
+	public List<Task> getTasks() {
+		return tasks;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-/*
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }*/
-
-    @Override
-    public String toString() {
-        return "Role {" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                "} ";
-    }
+	public long getId() {
+		return id;
+	}
+	
 }

@@ -22,59 +22,75 @@ import java.util.Set;
 @Entity
 @Table(name = "todos")
 public class ToDo {
-	public void setId(long id) {
-        this.id = id;
-    }
+	@Id
+	@GeneratedValue
+	private long id;
+	
+	public ToDo() {
+		createdAt = LocalDateTime.now();
+	}
+	
+	@Column(name = "created_at", columnDefinition = "TIMESTAMP")
+	LocalDateTime createdAt;
+	
+	@NotBlank
+	@Column(name = "title", nullable = false,unique = true)
+	private String title;
+	
+	@OneToMany(mappedBy = "todo",
+			cascade = CascadeType.ALL)
+	private List<Task> tasks;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "owner_id")
+	private User owner;
+	
+	@ManyToMany(mappedBy = "myTodos")
+	private List<User> users;
 
-    
+	public List<User> getUsers() {
+		return users;
+	}
 
-    @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "roles_sequence"),
-                    @Parameter(name = "initial_value", value = "3"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
-    private long id;
+	public void setUsers(List<User> users) {
+		this.users = users;
+	}
 
-    @NotNull(message = "The roleName cannot be null")
-    @NotBlank(message = "The roleName cannot be empty")
-    @Size(min = 2,max = 254,message = "The length of roleName should be >2 && <255")
-    @Pattern(regexp = "^[A-Za-z]+((\\s)?([A-Za-z])+)*$", message = "wrong name format")
-    @Column(nullable = false, unique = true)
-    private String name;
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
 
-   
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
-/*
-    public List<User> getUsers() {
-        return users;
-    }
+	public List<Task> getTasks() {
+		return tasks;
+	}
 
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }*/
+	public void setTasks(List<Task> tasks) {
+		this.tasks = tasks;
+	}
 
-    @Override
-    public String toString() {
-        return "Role {" +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                "} ";
-    }
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
+	}
+
+	public long getId() {
+		return id;
+	}
+	
+	
 }

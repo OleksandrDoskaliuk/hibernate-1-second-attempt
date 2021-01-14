@@ -8,8 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,73 +22,76 @@ import java.util.Set;
 @Entity
 @Table(name = &quot;todos&quot;)
 public class ToDo {
-<span class="nc" id="L21">    public ToDo() {</span>
-<span class="nc" id="L22">        created_at = LocalDateTime.now();</span>
+	@Id
+	@GeneratedValue
+	private long id;
+	
+<span class="fc" id="L29">	public ToDo() {</span>
+<span class="fc" id="L30">		createdAt = LocalDateTime.now();</span>
+<span class="fc" id="L31">	}</span>
+	
+	@Column(name = &quot;created_at&quot;, columnDefinition = &quot;TIMESTAMP&quot;)
+	LocalDateTime createdAt;
+	
+	@NotBlank
+	@Column(name = &quot;title&quot;, nullable = false,unique = true)
+	private String title;
+	
+	@OneToMany(mappedBy = &quot;todo&quot;,
+			cascade = CascadeType.ALL)
+	private List&lt;Task&gt; tasks;
+	
+	@ManyToOne(optional = false)
+	@JoinColumn(name = &quot;owner_id&quot;)
+	private User owner;
+	
+	@ManyToMany(mappedBy = &quot;myTodos&quot;)
+	private List&lt;User&gt; users;
 
-<span class="nc" id="L24">    }</span>
+	public List&lt;User&gt; getUsers() {
+<span class="nc" id="L52">		return users;</span>
+	}
 
-    public long getId() {
-<span class="nc" id="L27">        return id;</span>
-    }
+	public void setUsers(List&lt;User&gt; users) {
+<span class="nc" id="L56">		this.users = users;</span>
+<span class="nc" id="L57">	}</span>
 
-    public void setId(long id) {
-<span class="nc" id="L31">        this.id = id;</span>
-<span class="nc" id="L32">    }</span>
+	public LocalDateTime getCreatedAt() {
+<span class="fc" id="L60">		return createdAt;</span>
+	}
 
-    public LocalDateTime getCreated_at() {
-<span class="nc" id="L35">        return created_at;</span>
-    }
+	public void setCreatedAt(LocalDateTime createdAt) {
+<span class="nc" id="L64">		this.createdAt = createdAt;</span>
+<span class="nc" id="L65">	}</span>
 
-    public void setCreated_at(LocalDateTime created_at) {
-<span class="nc" id="L39">        this.created_at = created_at;</span>
-<span class="nc" id="L40">    }</span>
+	public String getTitle() {
+<span class="nc" id="L68">		return title;</span>
+	}
 
-    public String getTitle() {
-<span class="nc" id="L43">        return title;</span>
-    }
+	public void setTitle(String title) {
+<span class="fc" id="L72">		this.title = title;</span>
+<span class="fc" id="L73">	}</span>
 
-    public void setTitle(String title) {
-<span class="nc" id="L47">        this.title = title;</span>
-<span class="nc" id="L48">    }</span>
+	public List&lt;Task&gt; getTasks() {
+<span class="nc" id="L76">		return tasks;</span>
+	}
 
-    public User getOwner_id() {
-<span class="nc" id="L51">        return owner;</span>
-    }
+	public void setTasks(List&lt;Task&gt; tasks) {
+<span class="nc" id="L80">		this.tasks = tasks;</span>
+<span class="nc" id="L81">	}</span>
 
-    public void setOwner(User user) {
-<span class="nc" id="L55">        this.owner = user;</span>
-<span class="nc" id="L56">    }</span>
+	public User getOwner() {
+<span class="nc" id="L84">		return owner;</span>
+	}
 
-    @Id
-    @GeneratedValue(generator = &quot;sequence-generator&quot;)
-    @GenericGenerator(
-            name = &quot;sequence-generator&quot;,
-            strategy = &quot;org.hibernate.id.enhanced.SequenceStyleGenerator&quot;,
-            parameters = {
-                    @Parameter(name = &quot;sequence_name&quot;, value = &quot;ToDo_sequence&quot;),
-                    @Parameter(name = &quot;initial_value&quot;, value = &quot;20&quot;),
-                    @Parameter(name = &quot;increment_size&quot;, value = &quot;1&quot;)
+	public void setOwner(User owner) {
+<span class="fc" id="L88">		this.owner = owner;</span>
+<span class="fc" id="L89">	}</span>
 
-
-            }
-
-    )
-    private long id;
-
-
-    @Column(name = &quot;created_at&quot;, nullable = false, columnDefinition = &quot;TIMESTAMP&quot;)
-    private LocalDateTime created_at;
-
-
-    @NotBlank(message = &quot;The roleName cannot be empty&quot;)
-    @Column(nullable = false, unique = true)
-    private String title;
-
-
-
-    @ManyToOne
-    @JoinColumn(name = &quot;owner_id&quot;,referencedColumnName = &quot;id&quot;)
-    private User owner;
-
+	public long getId() {
+<span class="fc" id="L92">		return id;</span>
+	}
+	
+	
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

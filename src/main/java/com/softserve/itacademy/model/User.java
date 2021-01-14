@@ -23,20 +23,51 @@ public class User {
 	
 	@NotBlank
 	@Column(name = "email")
+	@Email
 	private String email;
 	
+	@NotBlank
 	@Column(name = "first_name")
+	@Pattern(regexp = "^([A-Z][a-z]+([ ]?[a-z]?['-]?[A-Z][a-z]+)*)$")
 	private String firstName;
 	
 	@Column(name = "last_name")
 	private String lastName;
 	
+	@NotBlank
 	@Column(name = "password")
 	private String password;
 	
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "role_id")
 	private Role role;
+	
+	@OneToMany(mappedBy = "owner",
+			cascade = CascadeType.ALL)
+	private List<ToDo> todos;
+	
+	@ManyToMany
+	@JoinTable(name = "todo_collaborator",
+	joinColumns = @JoinColumn(name = "collaborator_id"),
+	inverseJoinColumns = @JoinColumn(name = "todo_id"))
+	private List<ToDo> myTodos;
+	
+	
+	public List<ToDo> getMyTodos() {
+		return myTodos;
+	}
+
+	public void setMyTodos(List<ToDo> myTodos) {
+		this.myTodos = myTodos;
+	}
+
+	public List<ToDo> getTodos() {
+		return todos;
+	}
+
+	public void setTodos(List<ToDo> todos) {
+		this.todos = todos;
+	}
 
 	public String getEmail() {
 		return email;
