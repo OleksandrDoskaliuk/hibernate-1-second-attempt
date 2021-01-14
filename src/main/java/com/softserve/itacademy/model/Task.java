@@ -3,20 +3,50 @@ package com.softserve.itacademy.model;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 
 
 @Entity
 @Table(name = "tasks")
 public class Task {
-    public long getId() {
-        return id;
+	public void setId(long id) {
+        this.id = id;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    
+
+    @Id
+    @GeneratedValue(generator = "sequence-generator")
+    @GenericGenerator(
+            name = "sequence-generator",
+            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
+            parameters = {
+                    @Parameter(name = "sequence_name", value = "roles_sequence"),
+                    @Parameter(name = "initial_value", value = "3"),
+                    @Parameter(name = "increment_size", value = "1")
+            }
+    )
+    private long id;
+
+    @NotNull(message = "The roleName cannot be null")
+    @NotBlank(message = "The roleName cannot be empty")
+    @Size(min = 2,max = 254,message = "The length of roleName should be >2 && <255")
+    @Pattern(regexp = "^[A-Za-z]+((\\s)?([A-Za-z])+)*$", message = "wrong name format")
+    @Column(nullable = false, unique = true)
+    private String name;
+
+   
+
+    public long getId() {
+        return id;
     }
 
     public String getName() {
@@ -26,65 +56,20 @@ public class Task {
     public void setName(String name) {
         this.name = name;
     }
-
-    public String getPriority() {
-        return priority;
+/*
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setPriority(String priority) {
-        this.priority = priority;
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }*/
+
+    @Override
+    public String toString() {
+        return "Role {" +
+                "id = " + id +
+                ", name = '" + name + '\'' +
+                "} ";
     }
-
-    public long getState_id() {
-        return state_id;
-    }
-
-    public void setState_id(long state_id) {
-        this.state_id = state_id;
-    }
-
-    public long getTodo_id() {
-        return todo_id;
-    }
-
-    public void setTodo_id(long todo_id) {
-        this.todo_id = todo_id;
-    }
-
-    @Id
-    @GeneratedValue(generator = "sequence-generator")
-    @GenericGenerator(
-            name = "sequence-generator",
-            strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator",
-            parameters = {
-                    @Parameter(name = "sequence_name", value = "task_sequence"),
-                    @Parameter(name = "initial_value", value = "10"),
-                    @Parameter(name = "increment_size", value = "1")
-            }
-    )
-    private long id;
-
-    @NotBlank(message = "The roleName cannot be empty")
-    @Column(nullable = false)
-    private String name;
-
-    @Column(name = "priority")
-    private String priority;
-
-    @NotBlank(message = "The roleName cannot be empty")
-    @Column(nullable = false, unique = true)
-
-    @JoinColumn
-    private long state_id;
-
-
-    @JoinColumn
-    private  long todo_id;
-
-
-
-
-
-
-
 }
